@@ -34,7 +34,6 @@ namespace AssignmentFive
                         employee.Title = reader["Title"].ToString();
                         employee.Address = reader["Address"].ToString();
                         employee.City = reader["City"].ToString();
-                        
                     }
                 }
                 conn.Close();
@@ -44,7 +43,23 @@ namespace AssignmentFive
 
         public void SaveEmployee(int id, string lastname, string firstname, string title, string address, string city)
         {
-            throw new NotImplementedException();
+            var connectionString = ConfigurationManager.ConnectionStrings["NORTHWND"].ConnectionString;
+            using (var conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                var cmd =
+                    new SqlCommand(
+                        "UPDATE Employees SET FirstName = @FirstName, LastName = @LastName, Title = @Title, Address = @Address, City = @City WHERE EmployeeID = @id", conn);
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@FirstName", firstname);
+                cmd.Parameters.AddWithValue("@LastName", lastname);
+                cmd.Parameters.AddWithValue("@Title", title);
+                cmd.Parameters.AddWithValue("@Address", address);
+                cmd.Parameters.AddWithValue("@City", city);
+
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }
