@@ -12,9 +12,12 @@ namespace NorthwindService
     public interface IShipperService
     {
         [OperationContract]
+        [FaultContract(typeof(FaultException))]
         Shipper GetShipperByID(int id);
 
         [OperationContract]
+        [FaultContract(typeof(FaultException))]
+
         void SaveShipper(int id, string companyName, string phone);
     }
 

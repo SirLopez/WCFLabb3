@@ -12,8 +12,11 @@ namespace AssignmentFive
     public interface IEmployeeService
     {
         [OperationContract]
+        [FaultContract(typeof(FaultException))]
         Employee GetEmployeeByID(int id);
+
         [OperationContract]
+        [FaultContract(typeof(FaultException))]
         void SaveEmployee(int id, string lastname, string firstname, string title, string address, string city);
     }
 
