@@ -33,6 +33,10 @@ namespace EmployeeClient
             {
                 MessageBox.Show($"Something went wrong here, please read the message for more details: {error.Message}");
             }
+            catch (Exception error)
+            {
+                MessageBox.Show($"Something went wrong here, please read the message for more details: {error.Message}");
+            }
         }
 
         protected void ButtonSave_Click(object sender, EventArgs e)

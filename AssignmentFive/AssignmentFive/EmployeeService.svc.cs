@@ -15,15 +15,17 @@ namespace AssignmentFive
     {
         public Employee GetEmployeeByID(int id)
         {
-            var employee = new Employee();
-            var connectionString = ConfigurationManager.ConnectionStrings["NORTHWND"].ConnectionString;
-            using (var conn = new SqlConnection(connectionString))
+            try
             {
-                try
+                var employee = new Employee();
+                var connectionString = ConfigurationManager.ConnectionStrings["NORTHWND"].ConnectionString;
+                using (var conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    var employeeCommand = new SqlCommand("SELECT [EmployeeID], [LastName], [FirstName], [Title], [Address], [City] FROM Employees WHERE EmployeeID = @id", conn);
+                    var employeeCommand = new SqlCommand(
+                            "SELECT [EmployeeID], [LastName], [FirstName], [Title], [Address], [City] FROM Employees WHERE EmployeeID = @id",
+                            conn);
                     employeeCommand.Parameters.AddWithValue("@id", id);
 
                     using (var reader = employeeCommand.ExecuteReader())
@@ -40,12 +42,13 @@ namespace AssignmentFive
                     }
                     conn.Close();
                 }
-                catch (FaultException exception)
-                {
-                    throw new FaultException($"Something went wrong, for detailed information, please view the errormessage: {exception.Message}");
-                }
+                return employee;
             }
-            return employee;
+            catch (Exception exception)
+            {
+                throw new FaultException(
+                    $"Something went wrong, for detailed information, please view the errormessage: {exception.Message}");
+            }
         }
 
         public void SaveEmployee(int id, string lastname, string firstname, string title, string address, string city)
